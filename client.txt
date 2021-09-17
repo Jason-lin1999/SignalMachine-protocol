@@ -1,0 +1,296 @@
+package client.demo;
+
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.net.UnknownHostException;
+
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+import org.dom4j.io.OutputFormat;
+import org.dom4j.io.XMLWriter;
+
+import java.io.PrintWriter;
+import java.io.Writer;
+import org.dom4j.DocumentException;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+
+public class client {
+
+//    public client()
+//    {
+//
+//
+//    }
+//    public void log_in()
+//    {
+//        System.out.print("我已经登录上了");
+//    }
+
+    static void init(Document doc)
+    {
+        Element root = doc.addElement("systemScription").addAttribute("System", "TCIP").addAttribute("Version","1.0");
+
+        // 在根节点下添加第一个子节点
+//        Element oneChildElement= root.addElement("subSystem").addText("Hisense");
+        root.addElement("subSystem").addText("Hisense");
+        root.addElement("messageType").addText("1");
+        root.addElement("isRequest").addText("1");
+        root.addElement("seq").addText("20190806160612000678");
+        root.addElement("needResponse").addText("1");
+        root.addElement("result").addText("0");
+        root.addElement("flag").addText("0");
+    }
+
+
+
+    static void log_in(Document doc)
+    {
+//        Document doc = DocumentHelper.createDocument();
+        Element root = doc.getRootElement();
+        // 添加根节点
+//        Element root = doc.addElement("systemScription").addAttribute("System", "TCIP").addAttribute("Version","1.0");
+//
+//        // 在根节点下添加第一个子节点
+////        Element oneChildElement= root.addElement("subSystem").addText("Hisense");
+//        root.addElement("subSystem").addText("Hisense");
+//        root.addElement("messageType").addText("1");
+//        root.addElement("isRequest").addText("1");
+//        root.addElement("seq").addText("20190806160612000678");
+//        root.addElement("needResponse").addText("1");
+//        root.addElement("result").addText("0");
+//        root.addElement("flag").addText("0");
+        Element messageContent=root.addElement("messageContent");
+        messageContent.addElement("User").addText("system");
+        messageContent.addElement("Password").addText("1");
+//        oneChildElement.addElement("people")
+//                .addAttribute("attr", "child one")
+//                .addText("person one child one");
+//        oneChildElement.addElement("people")
+//                .addAttribute("attr", "child two")
+//                .addText("person one child two");
+
+        // 在根节点下添加第一个子节点
+//        Element twoChildElement= root.addElement("person").addAttribute("attr", "root two");
+//        twoChildElement.addElement("people")
+//                .addAttribute("attr", "child one")
+//                .addText("person two child one");
+//        twoChildElement.addElement("people")
+//                .addAttribute("attr", "child two")
+//                .addText("person two child two");
+
+
+    }
+
+    static void subscribe(Document doc)
+    {
+        Element root = doc.getRootElement();
+
+        List<Element> nodelist = root.elements("messageContent");
+//        Element namenode;
+        for (Element node:nodelist)
+        {
+//            if(namenode == node)
+//            Element namenode = node.element("User");
+//            namenode.setText("hello");
+//          修改节点名字
+            node.element("User").setName("Spot");
+            node.element("Password").setName("SubType");
+
+//          修改节点内容
+            node.element("Spot").setText("10");
+            node.element("SubType").setText("hhhh");
+        }
+
+            Element Flag = DocumentHelper.createElement("Flag");
+            Flag.setText("0");
+
+        Element add = (Element)root.element("messageContent");
+        List list = add.elements();
+
+        list.add(2,Flag);
+
+    }
+
+
+    static void connect(Document doc)
+    {
+        Element root = doc.getRootElement();
+
+//        List<Element> nodelist = root.elements("messageContent");
+
+        Element parent = root.element("messageContent");
+
+        Element rm1 = parent.element("SubType");
+        rm1.getParent().remove(rm1);
+
+        Element rm2 = parent.element("Flag");
+        rm2.getParent().remove(rm2);
+
+
+//        for (Element node:nodelist)
+//        {
+//            if(node.getName()=="SubType")
+//            {
+//                node.getParent().remove(node);
+//            }
+//
+//            if(node.getName()=="Flag")
+//            {
+//                rm.remove(node);
+//            }
+//        }
+
+
+
+    }
+
+
+    public static void main(String[] args) throws Exception {
+        // 2017年12月29日 下午1:43:11
+        Socket soc = null;
+        String data = "";
+        InetAddress addr = InetAddress.getByName("127.0.0.1");
+        int serverPort = 7896;
+        if (addr.isReachable(5000)) {
+            try {
+
+//                client in = new client();
+//                in.log_in();
+
+                soc = new Socket(addr, serverPort);
+
+//************************向客户端写xml文件******************************************
+                Document doc = DocumentHelper.createDocument();
+//
+//                // 添加根节点
+//                Element root = doc.addElement("root");
+//
+//                // 在根节点下添加第一个子节点
+//                Element oneChildElement= root.addElement("person").addAttribute("attr", "root noe");
+//                oneChildElement.addElement("people")
+//                        .addAttribute("attr", "child one")
+//                        .addText("person one child one");
+//                oneChildElement.addElement("people")
+//                        .addAttribute("attr", "child two")
+//                        .addText("person one child two");
+//
+//                // 在根节点下添加第一个子节点
+//                Element twoChildElement= root.addElement("person").addAttribute("attr", "root two");
+//                twoChildElement.addElement("people")
+//                        .addAttribute("attr", "child one")
+//                        .addText("person two child one");
+//                twoChildElement.addElement("people")
+//                        .addAttribute("attr", "child two")
+//                        .addText("person two child two");
+//                log_in(doc);
+//                subscribe(doc);
+//                connect(doc);
+
+                init(doc);
+                log_in(doc);
+
+//              写入缓冲区
+                String body = doc.asXML();
+
+                OutputStream outputStream = soc.getOutputStream();
+                outputStream.write(body.getBytes("UTF-8"));
+
+
+//                DataOutputStream out=new DataOutputStream(soc.getOutputStream());
+//                // 定义工厂 API，使应用程序能够从 XML 文档获取生成 DOM 对象树的解析器
+//                DocumentBuilderFactory factory = DocumentBuilderFactory
+//                        .newInstance();
+//                // 定义 API， 使其从 XML 文档获取 DOM 文档实例。使用此类，应用程序员可以从 XML 获取一个 Document
+//                DocumentBuilder builder = factory.newDocumentBuilder();
+//                // Document 接口表示整个 HTML 或 XML 文档。从概念上讲，它是文档树的根，并提供对文档数据的基本访问
+//                Document document = builder.newDocument();
+//                //组织生产xml文件内容
+//                Element root = document.createElement("persons");
+//                document.appendChild(root);
+//                Element person = document.createElement("person");
+//                Element name = document.createElement("name");
+//                name.appendChild(document.createTextNode("java小强"));
+//                person.appendChild(name);
+//                Element sex = document.createElement("sex");
+//                sex.appendChild(document.createTextNode("man"));
+//                person.appendChild(sex);
+//                Element age = document.createElement("age");
+//                age.appendChild(document.createTextNode("99"));
+//                person.appendChild(age);
+//                root.appendChild(person);
+//
+//                TransformerFactory tf = TransformerFactory.newInstance();
+////                // 此抽象类的实例能够将源树转换为结果树
+//                Transformer transformer;
+//                transformer = tf.newTransformer();
+//
+//                DOMSource source = new DOMSource(doc);
+//                ByteArrayOutputStream bos = new ByteArrayOutputStream();
+//                transformer.transform(source, new StreamResult(bos));
+//                String xmlStr = bos.toString();
+//                out.writeUTF(xmlStr);
+
+//********************************接收读取客户端传来的内容******************************************
+                //接收来自服务器的数据，并解析打印
+//                DataInputStream in = new DataInputStream(soc.getInputStream());
+//                data = in.readUTF();
+//
+//                Document dom=DocumentHelper.parseText(data);
+//
+//                OutputFormat format = new OutputFormat();
+//                format.setIndentSize(4);  // 行缩进
+//                format.setNewlines(true); // 一个结点为一行
+//                format.setTrimText(true); // 去重空格
+//                format.setPadText(true);
+//                format.setNewLineAfterDeclaration(false); // 放置xml文件中第二行为空白行
+//
+//                Writer out = new PrintWriter("E:\\xmlTest.txt", "utf-8");
+//                XMLWriter writer = new XMLWriter(out, format);
+//
+//                writer.write(dom);
+//
+//                out.close();
+//                writer.close();
+
+
+//				System.out.println("接收到的数据:" + data);
+//                DOM(data);
+            } catch (UnknownHostException e) {
+                System.out.println("Socket Error:" + e.getMessage());
+            } catch (EOFException e) {
+                System.out.println("EOF:" + e.getMessage());
+            } catch (IOException e) {
+                System.out.println("IO:" + e.getMessage());
+            } finally {
+                if (soc != null)
+                    try {
+                        soc.close();
+                    } catch (IOException e) {/* close failed */
+                    }
+            }
+        } else {
+            System.out.println("FAILURE - ping " + addr
+                    + " with no interface specified");
+        }
+    }
+
+
+}
