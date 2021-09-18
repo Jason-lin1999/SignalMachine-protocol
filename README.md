@@ -1,6 +1,5 @@
 # SignalMachine-protocol
 
-这是远程分支2的说明。
-目前两个文件的内容是复制master里面的
+client中包含了一个类文件（protocols.java），是对信号机操控功能的封装。
 
-已经从远处拉到了本地，现在要尝试推送上去。
+这个代码实现：client发送xml,server控制台输出；server发送xml，client接收，转换为json数据，控制台输出。按此循环。
