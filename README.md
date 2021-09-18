@@ -1,10 +1,4 @@
 # SignalMachine-protocol
 
-Õâ¸öÊÇÐÅºÅ»úÏîÄ¿µÄÐ­Òé´úÂë¡£
-Á½¸öÎÄ¼þ·Ö±ðÊÇ¿Í»§¶ËºÍ·þÎñ¶Ë´úÂë£¬ÓÃIDEAÖ±½Ó´ò¿ª¡£
-
-ÊµÏÖµÄ¹¦ÄÜÊÇ¿Í»§¶Ë·¢ËÍxml¸ø·þÎñ¶Ë£¬·þÎñ¶Ë½«xml×ª»»Îªjson¸ñÊ½ÔÙ±£´æ¡£
-
-µÚÒ»´ÎÊÇÖ»ÄÜ·¢ËÍlogin
-
-µ«ÊÇÕâ¸ö´úÂëÓÐ¸öÎÊÌâ¾ÍÊÇ¿Í»§¶ËÔÙ´Î·¢ËÍ»á³öÒ»Ð©ÎÊÌâ
+è¿™æ˜¯è¿œç¨‹åˆ†æ”¯2çš„è¯´æ˜Žã€‚
+ç›®å‰ä¸¤ä¸ªæ–‡ä»¶çš„å†…å®¹æ˜¯å¤åˆ¶masteré‡Œé¢çš„
