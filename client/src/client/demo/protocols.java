@@ -10,6 +10,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.List;
 
 
 /**
@@ -112,7 +113,7 @@ public class protocols {
         return body;
     }
 
-    public String subscribe()
+    public String subscribe_message(String spot)
     {
         Document doc=init();
 
@@ -127,7 +128,7 @@ public class protocols {
 
 
         Element messageContent = clearMessageContent(root);
-        messageContent.addElement("Spot").addText("102497");
+        messageContent.addElement("Spot").addText(spot);
         messageContent.addElement("SubType").addText("10");
         messageContent.addElement("Flag").addText("0");
 
@@ -138,7 +139,7 @@ public class protocols {
     }
 
 
-    public String connect()
+    public String connect_status(String spot)
     {
         Document doc=init();
         Element root = doc.getRootElement();
@@ -151,7 +152,7 @@ public class protocols {
         root.element("flag").setText("0");
 
         Element messageContent = clearMessageContent(root);
-        messageContent.addElement("Spot").addText("100146");
+        messageContent.addElement("Spot").addText(spot);
 
         String body="";
         body= doc.asXML().replace("\n","");
@@ -159,7 +160,7 @@ public class protocols {
         return body;
     }
 
-    public String phase()
+    public String phase_status(String spot)
     {
         Document doc=init();
 
@@ -173,7 +174,7 @@ public class protocols {
         root.element("flag").setText("0");
 
         Element messageContent = clearMessageContent(root);
-        messageContent.addElement("Spot").addText("100146");
+        messageContent.addElement("Spot").addText(spot);
 
         String body="";
         body= doc.asXML().replace("\n","");
@@ -182,7 +183,7 @@ public class protocols {
     }
 
 
-    public String cell_status()
+    public String cell_status(String spot)
     {
         Document doc=init();
         Element root = doc.getRootElement();
@@ -195,7 +196,7 @@ public class protocols {
         root.element("flag").setText("0");
 
         Element messageContent = clearMessageContent(root);
-        messageContent.addElement("Spot").addText("100146");
+        messageContent.addElement("Spot").addText(spot);
 
         String body="";
         body= doc.asXML().replace("\n","");
@@ -206,7 +207,7 @@ public class protocols {
 
     }
 
-    public String coordinate_status()
+    public String coordinate_status(String spot)
     {
         Document doc=init();
         Element root = doc.getRootElement();
@@ -219,7 +220,7 @@ public class protocols {
         root.element("flag").setText("0");
 
         Element messageContent = clearMessageContent(root);
-        messageContent.addElement("Spot").addText("100146");
+        messageContent.addElement("Spot").addText(spot);
 
         String body="";
         body= doc.asXML().replace("\n","");
@@ -227,7 +228,30 @@ public class protocols {
         return body;
     }
 
-    public String self_control(String a)
+    public String channel_status(String spot)
+    {
+        Document doc=init();
+
+        Element root = doc.getRootElement();
+
+        //修改xml元素的值
+        root.element("messageType").setText("40");
+        root.element("isRequest").setText("1");
+        root.element("needResponse").setText("1");
+        root.element("result").setText("0");
+        root.element("flag").setText("0");
+
+
+        Element messageContent = clearMessageContent(root);
+        messageContent.addElement("Spot").addText(spot);
+
+        String body="";
+        body= doc.asXML().replace("\n","");
+
+        return body;
+    }
+
+    public String self_control(String spot,String pattern)
     {
         Document doc=init();
 
@@ -239,10 +263,10 @@ public class protocols {
         root.element("flag").setText("0");
 
         Element messageContent = clearMessageContent(root);
-        messageContent.addElement("Spot").addText("100146");
+        messageContent.addElement("Spot").addText(spot);
 
 //        a表示制定的运行方案，取值范围见图5
-        messageContent.addElement("Pattern").addText(a);
+        messageContent.addElement("Pattern").addText(pattern);
 
         String body="";
         body= doc.asXML().replace("\n","");
@@ -250,7 +274,7 @@ public class protocols {
         return body;
     }
 
-    public String phase_control(String a,String b)
+    public String phase_control(String spot,List<String> holdPhases)
     {
         Document doc=init();
 
@@ -262,12 +286,12 @@ public class protocols {
         root.element("flag").setText("0");
 
         Element messageContent = clearMessageContent(root);
-        messageContent.addElement("Spot").addText("100146");
+        messageContent.addElement("Spot").addText(spot);
 
 //      a表示驻留的相位数，取值【1-16】
 //      b表示驻留的相位（锁定的相位）。取值【1-16】
-        messageContent.addElement("Count").addText(a);
-        messageContent.addElement("HoldPhase").addText(b);
+        messageContent.addElement("Count").addText(holdPhases.get(0));
+        messageContent.addElement("HoldPhase").addText(holdPhases.get(1));
 
 
         String body="";
@@ -276,7 +300,7 @@ public class protocols {
         return body;
     }
 
-    public String step_control(String a)
+    public String step_control(String spot,String a)
     {
         Document doc=init();
 
@@ -288,7 +312,7 @@ public class protocols {
         root.element("flag").setText("0");
 
         Element messageContent = clearMessageContent(root);
-        messageContent.addElement("Spot").addText("100146");
+        messageContent.addElement("Spot").addText(spot);
 
 //      a表示控制命令。1：开始步进；0：取消步进
         messageContent.addElement("Command").addText(a);
@@ -301,6 +325,10 @@ public class protocols {
         return body;
     }
 
+
+
+
+
     public String XMLtoJSON(String data)
     {
         JSONObject xmlJSONObj = XML.toJSONObject(data);
@@ -309,4 +337,6 @@ public class protocols {
 
         return jsonPrettyPrintString;
     }
+
 }
+

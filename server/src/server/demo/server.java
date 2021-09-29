@@ -30,9 +30,13 @@ public class server extends Thread {
         String readline = null;
         String inTemp = null;
         //String outTemp = null;
+        String xml=null;
+        String xml2=null;
         String turnLine = "\n";
         final String client = "Client:";
         final String server = "Server:";
+
+        String data=null;
 
         int port = 7899;
         //byte ipAddressTemp[] = {127, 0, 0, 1};
@@ -42,36 +46,77 @@ public class server extends Thread {
         ServerSocket serverSocket = new ServerSocket(port);
 
 
-        Socket socket = serverSocket.accept();
+//        Socket socket = serverSocket.accept();
 
         //创建三个流，系统输入流BufferedReader systemIn，socket输入流BufferedReader socketIn，socket输出流PrintWriter socketOut;
         BufferedReader systemIn = new BufferedReader(new InputStreamReader(System.in));
-        BufferedReader socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
-        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+//        BufferedReader socketIn = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+//        PrintWriter socketOut = new PrintWriter(socket.getOutputStream());
+//        DataInputStream input = new DataInputStream(socket.getInputStream());
+//        DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+
 
         while(readline != "bye"){
 
-            inTemp = socketIn.readLine();
-            System.out.println(client + turnLine + inTemp);
-            System.out.println(server);
-
+            Socket socket = serverSocket.accept();
+            DataInputStream input = new DataInputStream(socket.getInputStream());
+            DataOutputStream output = new DataOutputStream(socket.getOutputStream());
+//            inTemp = socketIn.readLine();
+//            System.out.println(client + turnLine + inTemp);
+//            System.out.println(server);
+//
 //            readline = systemIn.readLine();
-            readline = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><systemScription System=\"TCIP\" Version=\"1.0\"><subSystem>Hisense</subSystem><messageType>0</messageType><isRequest> </isRequest><needResponse> </needResponse><result> </result><flag> </flag><messageContent> </messageContent></systemScription>\n" +
-                    "\n";
-            socketOut.println(readline);
-            socketOut.flush();    //赶快刷新使Client收到，也可以换成socketOut.println(readline, ture)
+            xml = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><systemScription System=\"TCIP\" Version=\"1.0\"><subSystem>Hisense</subSystem><messageType>0</messageType><isRequest> </isRequest><needResponse> </needResponse><result> </result><flag> </flag><messageContent> </messageContent></systemScription>";
+            xml2 = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><systemScription System=\"TCIP\" Version=\"1.0\"><subSystem>Hisense</subSystem><messageType>100</messageType><isRequest> </isRequest><needResponse> </needResponse><result> </result><flag> </flag><messageContent> </messageContent></systemScription>";
+//            socketOut.println(xml);
+//            socketOut.flush();    //赶快刷新使Client收到，也可以换成socketOut.println(readline, ture)
 
             //outTemp = readline;
 
             //System.out.println(server);
 
+            System.out.println("准备接受");
+
+//            while ((data = input.readUTF())!=null)
+//            {
+////                System.out.println(client + turnLine + data);
+//                System.out.println(data);
+//            }
+
+//            data = input.readUTF();
+//            System.out.println(data);
+//
+//            Thread.sleep(10000);
+//            data = input.readUTF();
+//            System.out.println(data);
+//
+//            data = input.readUTF();
+//            System.out.println(data);
+//
+//            data = input.readUTF();
+//            System.out.println(data);
+
+
+            data = input.readUTF();
+            System.out.println(client + turnLine + data);
+            System.out.println(server);
+//            System.out.println(data);
+//            writeXMLFile(data, "D:\\Data\\serverP.xml");
+            readline = systemIn.readLine();
+            System.out.println("准备写入流");
+            output.writeUTF(xml);
+            output.writeUTF(xml2);
+//            output.flush();
+            System.out.println("写入流OK");
+
+
         }
 
-        systemIn.close();
-        socketIn.close();
-        socketOut.close();
-        socket.close();
-        serverSocket.close();
+//        systemIn.close();
+//        socketIn.close();
+//        socketOut.close();
+//        socket.close();
+//        serverSocket.close();
 
     }
 
@@ -95,13 +140,13 @@ public class server extends Thread {
         xwriter.close();
     }
 
-    /**
-     * 往json文件中写入数据
-     * @param jsonPath json文件路径
-     * @param inMap Map类型数据
-     * @param flag 写入状态，true表示在文件中追加数据，false表示覆盖文件数据
-     * @return 写入文件状态  成功或失败
-     */
+    //    /**
+//     * 往json文件中写入数据
+//     * @param jsonPath json文件路径
+//     * @param inMap Map类型数据
+//     * @param flag 写入状态，true表示在文件中追加数据，false表示覆盖文件数据
+//     * @return 写入文件状态  成功或失败
+//     */
     public String writeJson(String jsonPath, String jsondata, boolean flag) {
         // Map数据转化为Json，再转换为String
 //        String data = new JSONObject(inMap).toString();
